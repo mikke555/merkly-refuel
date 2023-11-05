@@ -1,8 +1,12 @@
-# от скольки до скольки спим между кошельками (секунды) :
-SLEEP_FROM = 10
-SLEEP_TO   = 50
+SLEEP_FROM = 60
+SLEEP_TO   = 120
 
-# нужно ли перемешивать кошельки. True = да. False = нет
-RANDOM_WALLETS = True # True / False
+SHUFFLE_WALLETS = True 
 
-MAX_GWEI = 20 # gas в gwei
+MAX_GWEI = 30 
+
+FROM_CHAIN = 'zksync' # fr: arbitrum | optimism | bsc | polygon | celo | zksync
+TO_CHAIN = 'conflux'  # to: base | kava | linea | zora | scrol | conflux
+    
+MIN_COUNT = 0.0001
+MAX_COUNT = 0.0009

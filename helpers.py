@@ -1,5 +1,4 @@
 from chain import DATA
-from const import ERC20_ABI
 from config import MAX_GWEI
 
 import time
@@ -7,6 +6,7 @@ from loguru import logger
 from web3 import Web3
 import random
 from tqdm import tqdm
+from web3.middleware import geth_poa_middleware
 
 max_time_check_tx_status = 360
 w3_eth = Web3(Web3.HTTPProvider('https://rpc.ankr.com/eth'))
@@ -27,20 +27,6 @@ def cheker_gwei():
         while w3_eth.eth.gas_price > max_gwei:
             time.sleep(60)
         logger.info('Газ в норме. Продолжаю работу')
-
-
-def check_data_token(chain, token_address):
-    try:
-
-        web3 = Web3(Web3.HTTPProvider(DATA[chain]['rpc']))
-        token_contract = web3.eth.contract(address=Web3.to_checksum_address(token_address), abi=ERC20_ABI)
-        decimals = token_contract.functions.decimals().call()
-        symbol = token_contract.functions.symbol().call()
-
-        return token_contract, decimals, symbol
-
-    except Exception as error:
-        logger.error(error)
 
 
 def check_status_tx(chain, tx_hash):
@@ -82,25 +68,10 @@ def add_gas_limit_layerzero(web3, contract_txn):
     return contract_txn
 
 
-def add_gas_price(web3, contract_txn):
-    gas_price = web3.eth.gas_price
-    contract_txn['gasPrice'] = int(gas_price * random.uniform(1.01, 1.02))
-    return contract_txn
-
-
-def check_allowance(chain, token_address, wallet, spender):
-    try:
-        web3 = Web3(Web3.HTTPProvider(DATA[chain]['rpc']))
-        contract = web3.eth.contract(address=Web3.to_checksum_address(token_address), abi=ERC20_ABI)
-        amount_approved = contract.functions.allowance(wallet, spender).call()
-        return amount_approved
-    except Exception as error:
-        logger.error(error)
-
-
 def get_web3(chain):
     rpc = DATA[chain]['rpc']
     web3 = Web3(Web3.HTTPProvider(rpc))
+    web3.middleware_onion.inject(geth_poa_middleware, layer=0)
     return web3
 
 
