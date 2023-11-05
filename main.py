@@ -1,6 +1,6 @@
 from chain import DATA
 from const import MERKLY_CONTRACTS, LAYERZERO_CHAINS_ID, ABI_MERKLY_REFUEL
-from config import SLEEP_FROM, SLEEP_TO, SHUFFLE_WALLETS, FROM_CHAIN, TO_CHAIN, MIN_COUNT, MAX_COUNT
+from config import SLEEP_FROM, SLEEP_TO, SHUFFLE_WALLETS, FROM_CHAIN, TO_CHAIN, MIN_AMOUNT, MAX_AMOUNT
 from helpers import get_web3, sign_tx, add_gas_limit_layerzero, check_status_tx, intToDecimal, sleeping, cheker_gwei
 
 from loguru import logger
@@ -81,10 +81,15 @@ if __name__ == '__main__':
 
         if SHUFFLE_WALLETS:
             random.shuffle(keys)
-
-        for key in keys:
+            
+        while keys:
+            key = keys.pop(0)
+            
             cheker_gwei()
-            merkly_refuel(FROM_CHAIN, TO_CHAIN, MIN_COUNT, MAX_COUNT, key)
-            sleeping(SLEEP_FROM, SLEEP_TO)
+            success = merkly_refuel(FROM_CHAIN, TO_CHAIN, MIN_AMOUNT, MAX_AMOUNT, key)
+            
+            if keys and success:
+                sleeping(SLEEP_FROM, SLEEP_TO)
+            
 
-    print("Скрипт закончил работу.")
+    print("\nScript has finished running\n")

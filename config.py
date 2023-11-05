@@ -8,5 +8,5 @@ MAX_GWEI = 30
 FROM_CHAIN = 'zksync' # fr: arbitrum | optimism | bsc | polygon | celo | zksync
 TO_CHAIN = 'conflux'  # to: base | kava | linea | zora | scrol | conflux
     
-MIN_COUNT = 0.0001
-MAX_COUNT = 0.0009
+MIN_AMOUNT = 0.0001
+MAX_AMOUNT = 0.0015
