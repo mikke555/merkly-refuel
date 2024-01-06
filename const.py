@@ -8,11 +8,14 @@ LAYERZERO_CHAINS_ID = {
     'kava'      : 177,
     'linea'     : 183,
     'base'      : 184,
-    'zora'      :195,
+    'zora'      : 195,
     'scroll'    : 214,
     'conflux'   : 212,
     'celo'      : 125,
-    'zksync'    : 165
+    'zksync'    : 165,
+    'nova'      : 175,
+    'astar'     : 210,
+    'opbnb'     : 202
 }
 
 MERKLY_CONTRACTS = {
