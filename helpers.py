@@ -1,12 +1,15 @@
-from chain import DATA
-from config import MAX_GWEI
+from data.const import CHAIN_DATA as DATA
+from config import MAX_GWEI, FROM_CHAIN, TO_CHAIN, MIN_AMOUNT, MAX_AMOUNT, RANDOM_DEST
 
-import time
-from loguru import logger
-from web3 import Web3
-import random
-from tqdm import tqdm
 from web3.middleware import geth_poa_middleware
+from web3 import Web3
+from loguru import logger
+from tqdm import tqdm
+
+import random
+import time
+import json
+
 
 max_time_check_tx_status = 360
 w3_eth = Web3(Web3.HTTPProvider('https://rpc.ankr.com/eth'))
@@ -23,10 +26,10 @@ def sign_tx(web3, contract_txn, privatkey):
 def cheker_gwei():
     max_gwei = MAX_GWEI * 10 ** 9
     if w3_eth.eth.gas_price > max_gwei:
-        logger.info('Газ большой, пойду спать')
+        logger.info('Gas is too high, falling asleep')
         while w3_eth.eth.gas_price > max_gwei:
             time.sleep(60)
-        logger.info('Газ в норме. Продолжаю работу')
+        logger.info('Gas is back to normal, continue')
 
 
 def check_status_tx(chain, tx_hash):
@@ -83,3 +86,27 @@ def sleeping(from_sleep, to_sleep):
     x = random.randint(from_sleep, to_sleep)
     for i in tqdm(range(x), desc='sleep ', bar_format='{desc}: {n_fmt}/{total_fmt}'):
         time.sleep(1)
+        
+    
+def generate_refuel_params(FROM_CHAIN, TO_CHAIN, MIN_AMOUNT, MAX_AMOUNT):
+    if not RANDOM_DEST: 
+        to_chain = TO_CHAIN
+        rand_amount = round(random.uniform(MIN_AMOUNT, MAX_AMOUNT), 8)
+    else:
+        with open('data/routes.json') as f:
+            routes = json.load(f)
+            
+        from_chain = routes[FROM_CHAIN]
+        
+        rand_dest = random.choice(from_chain)
+        to_chain = list(rand_dest.keys())[0]
+
+        min_val = rand_dest[to_chain]['min']
+        max_val = rand_dest[to_chain]['max']
+        rand_amount = random.uniform(min_val, max_val)
+
+    return to_chain, rand_amount
+
+
+
+

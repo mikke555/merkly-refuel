@@ -1,12 +1,13 @@
 SLEEP_FROM = 60
 SLEEP_TO   = 120
 
+MAX_GWEI = 20 
 SHUFFLE_WALLETS = True 
 
-MAX_GWEI = 30 
+RANDOM_DEST = True # True | False
 
-FROM_CHAIN = 'zksync' # fr: arbitrum | optimism | bsc | polygon | celo | zksync
-TO_CHAIN = 'conflux'  # to: base | kava | linea | zora | scrol | conflux
+FROM_CHAIN = 'arbitrum' # fr: arbitrum | optimism | bsc | polygon | celo | zksync | base
+TO_CHAIN = 'celo'  # to: base | kava | linea | zora | scrol | conflux | nova | astar | opbnb | gnosis | klaytn | beam | moonbeam | celo
     
-MIN_AMOUNT = 0.0001
-MAX_AMOUNT = 0.0015
+MIN_AMOUNT = 0.01
+MAX_AMOUNT = 0.05
