@@ -20,6 +20,7 @@ LAYERZERO_CHAINS_ID = {
     'klaytn'    : 150,
     'beam'      : 198,
     'moonbeam'  : 126,
+    'harmony'   : 116,
 }
 
 MERKLY_CONTRACTS = {

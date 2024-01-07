@@ -9,6 +9,7 @@ from tqdm import tqdm
 import random
 import time
 import json
+import csv
 
 
 max_time_check_tx_status = 360
@@ -106,6 +107,16 @@ def generate_refuel_params(FROM_CHAIN, TO_CHAIN, MIN_AMOUNT, MAX_AMOUNT):
         rand_amount = random.uniform(min_val, max_val)
 
     return to_chain, rand_amount
+
+
+def write_to_csv(key, address, result):
+    with open('result.csv', 'a', newline='') as file:
+        writer = csv.writer(file)
+
+        if file.tell() == 0:
+            writer.writerow(['key', 'address', 'result'])
+
+        writer.writerow([key, address, result])
 
 
 

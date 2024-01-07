@@ -1,13 +1,32 @@
 {
+  "bsc": [
+    {
+      "gnosis": { "min": 0.01, "max": 0.03 }
+    },
+    {
+      "harmony": { "min": 0.5, "max": 3 }
+    }
+  ],
   "base": [
     {
       "gnosis": { "min": 0.01, "max": 0.03 }
     },
-    { "moonbeam": { "min": 0.01, "max": 0.05 } }
+    {
+      "moonbeam": { "min": 0.01, "max": 0.05 }
+    }
   ],
   "optimism": [
     {
       "celo": { "min": 0.01, "max": 0.04 }
+    },
+    {
+      "kava": { "min": 0.01, "max": 0.05 }
+    },
+    {
+      "moonbeam": { "min": 0.01, "max": 0.05 }
+    },
+    {
+      "harmony": { "min": 0.5, "max": 3 }
     }
   ],
   "arbitrum": [
@@ -18,21 +37,27 @@
       "klaytn": { "min": 0.01, "max": 0.05 }
     },
     {
-      "kava": { "min": 0.01, "max": 0.02 }
+      "kava": { "min": 0.01, "max": 0.05 }
     },
     {
       "beam": { "min": 0.5, "max": 1.5 }
+    },
+    {
+      "moonbeam": { "min": 0.01, "max": 0.05 }
+    },
+    {
+      "harmony": { "min": 0.5, "max": 3 }
     }
   ],
   "zksync": [
     {
-      "astar": { "min": 0.01, "max": 0.02 }
+      "astar": { "min": 0.01, "max": 0.04 }
     },
     {
-      "conflux": { "min": 0.01, "max": 0.02 }
+      "klaytn": { "min": 0.01, "max": 0.05 }
     },
     {
-      "kava": { "min": 0.01, "max": 0.02 }
+      "kava": { "min": 0.01, "max": 0.05 }
     },
     {
       "nova": { "min": 0.00001, "max": 0.00002 }

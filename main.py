@@ -1,6 +1,6 @@
 from data.const import MERKLY_CONTRACTS, LAYERZERO_CHAINS_ID, ABI_MERKLY_REFUEL, CHAIN_DATA as DATA
 from config import SLEEP_FROM, SLEEP_TO, SHUFFLE_WALLETS, FROM_CHAIN, TO_CHAIN, MIN_AMOUNT, MAX_AMOUNT
-from helpers import get_web3, sign_tx, add_gas_limit_layerzero, check_status_tx, intToDecimal, sleeping, cheker_gwei, generate_refuel_params
+from helpers import *
 
 from loguru import logger
 from eth_abi import encode
@@ -62,6 +62,7 @@ def merkly_refuel(from_chain, to_chain, amount, private_key):
             
             if status == 1:
                 logger.success(f'{module_str} | {tx_link}')
+                write_to_csv(private_key, account.address, "success")
                 return "success"
 
         else:
@@ -69,6 +70,7 @@ def merkly_refuel(from_chain, to_chain, amount, private_key):
 
     except Exception as error:
         logger.error(f'{module_str} | {error}')
+        write_to_csv(private_key, account.address, str(error))
 
 
 if __name__ == '__main__':
