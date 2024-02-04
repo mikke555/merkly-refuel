@@ -1,5 +1,5 @@
 from data.const import CHAIN_DATA as DATA
-from config import MAX_GWEI, FROM_CHAIN, TO_CHAIN, MIN_AMOUNT, MAX_AMOUNT, RANDOM_DEST
+from config import MAX_GWEI, FROM_CHAIN, TO_CHAIN, MIN_AMOUNT, MAX_AMOUNT
 
 from web3.middleware import geth_poa_middleware
 from web3 import Web3
@@ -83,14 +83,18 @@ def intToDecimal(qty, decimal):
     return int(qty * int("".join(["1"] + ["0"] * decimal)))
 
 
-def sleeping(from_sleep, to_sleep):
+def sleep(from_sleep, to_sleep):
     x = random.randint(from_sleep, to_sleep)
     for i in tqdm(range(x), desc='sleep ', bar_format='{desc}: {n_fmt}/{total_fmt}'):
         time.sleep(1)
         
+def sleep_silently(from_sleep, to_sleep):
+    x = random.randint(from_sleep, to_sleep)
+    time.sleep(x)
+        
     
 def generate_refuel_params(FROM_CHAIN, TO_CHAIN, MIN_AMOUNT, MAX_AMOUNT):
-    if not RANDOM_DEST: 
+    if TO_CHAIN: 
         to_chain = TO_CHAIN
         rand_amount = round(random.uniform(MIN_AMOUNT, MAX_AMOUNT), 8)
     else:
@@ -104,19 +108,19 @@ def generate_refuel_params(FROM_CHAIN, TO_CHAIN, MIN_AMOUNT, MAX_AMOUNT):
 
         min_val = rand_dest[to_chain]['min']
         max_val = rand_dest[to_chain]['max']
-        rand_amount = random.uniform(min_val, max_val)
+        rand_amount = round(random.uniform(min_val, max_val), 8)
 
     return to_chain, rand_amount
 
 
-def write_to_csv(key, address, result):
+def write_to_csv(address, key, result):
     with open('result.csv', 'a', newline='') as file:
         writer = csv.writer(file)
 
         if file.tell() == 0:
-            writer.writerow(['key', 'address', 'result'])
+            writer.writerow(['address', 'key', 'result'])
 
-        writer.writerow([key, address, result])
+        writer.writerow([address, key,  result])
 
 
 

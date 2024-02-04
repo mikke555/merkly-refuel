@@ -1,5 +1,5 @@
 from data.const import MERKLY_CONTRACTS, LAYERZERO_CHAINS_ID, ABI_MERKLY_REFUEL, CHAIN_DATA as DATA
-from config import SLEEP_FROM, SLEEP_TO, SHUFFLE_WALLETS, FROM_CHAIN, TO_CHAIN, MIN_AMOUNT, MAX_AMOUNT
+from config import SLEEP_BETWEEN_TX, SLEEP_BETWEEN_WALLETS, SHUFFLE_WALLETS, FROM_CHAIN, TO_CHAIN, MIN_AMOUNT, MAX_AMOUNT, NUM_TX
 from helpers import *
 
 from loguru import logger
@@ -28,7 +28,7 @@ def merkly_refuel(from_chain, to_chain, amount, private_key):
         nonce = web3.eth.get_transaction_count(wallet)
         
         module_str = f'merkly_refuel : {from_chain} => {to_chain}'
-        logger.info(module_str)
+        logger.info(f'{module_str} | wallet {wallet}')
 
         contract = web3.eth.contract(address=Web3.to_checksum_address(
             MERKLY_CONTRACTS[from_chain]), abi=ABI_MERKLY_REFUEL)
@@ -62,7 +62,7 @@ def merkly_refuel(from_chain, to_chain, amount, private_key):
             
             if status == 1:
                 logger.success(f'{module_str} | {tx_link}')
-                write_to_csv(private_key, account.address, "success")
+                write_to_csv(account.address, private_key, "success")
                 return "success"
 
         else:
@@ -70,7 +70,7 @@ def merkly_refuel(from_chain, to_chain, amount, private_key):
 
     except Exception as error:
         logger.error(f'{module_str} | {error}')
-        write_to_csv(private_key, account.address, str(error))
+        write_to_csv(account.address, private_key, str(error))
 
 
 if __name__ == '__main__':
@@ -82,13 +82,18 @@ if __name__ == '__main__':
             
         while keys:
             cheker_gwei()
-            
             key = keys.pop(0)
-            to, amount = generate_refuel_params(FROM_CHAIN, TO_CHAIN, MIN_AMOUNT, MAX_AMOUNT)
-                
-            success = merkly_refuel(FROM_CHAIN, to, amount, key)
+            num_tx = random.choice(NUM_TX)
             
+            if num_tx > 0:
+                for i in range(num_tx):
+                    to, amount = generate_refuel_params(FROM_CHAIN, TO_CHAIN, MIN_AMOUNT, MAX_AMOUNT)
+                    success = merkly_refuel(FROM_CHAIN, to, amount, key)
+                    
+                    if i < num_tx - 1:
+                        sleep_silently(*SLEEP_BETWEEN_TX)
+
             if keys and success:
-                sleeping(SLEEP_FROM, SLEEP_TO)
+                sleep(*SLEEP_BETWEEN_WALLETS)
             
     print("\nExecution finished\n")
