@@ -1,5 +1,5 @@
 from data.const import CHAIN_DATA as DATA
-from config import MAX_GWEI, FROM_CHAIN, TO_CHAIN, MIN_AMOUNT, MAX_AMOUNT
+from config import MAX_GWEI
 
 from web3.middleware import geth_poa_middleware
 from web3 import Web3
